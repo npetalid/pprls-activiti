@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/bpmn20" id="review-definitions">
+  <message id="AssignRegisterNumberId" name="AssignRegisterNumber"></message>
+  <process id="activitiReview" name="Review And Approve Activiti Process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="editDraftId" name="Edit Draft"></userTask>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="editDraftId"></sequenceFlow>
+    <serviceTask id="findApproverTaskId" name="Find Approver" activiti:class="gr.opekepe.pprls.ApproverLocator">
+      <extensionElements>
+        <activiti:field name="requester">
+          <activiti:string><![CDATA[Nikos]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow19" sourceRef="editDraftId" targetRef="findApproverTaskId"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow20" sourceRef="findApproverTaskId" targetRef="exclusivegateway1"></sequenceFlow>
+    <startEvent id="informRegistrarMessageId" name="Inform Registrar Message">
+      <messageEventDefinition messageRef="AssignRegisterNumberId"></messageEventDefinition>
+    </startEvent>
+    <sequenceFlow id="noMoreApproversFlowId" name="No more approvers" sourceRef="exclusivegateway1" targetRef="informRegistrarMessageId"></sequenceFlow>
+    <userTask id="reviewDraftTaskId" name="Review Draft"></userTask>
+    <sequenceFlow id="moreApproversFlowId" name="Approval Required" sourceRef="exclusivegateway1" targetRef="reviewDraftTaskId"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow21" sourceRef="reviewDraftTaskId" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="draftApprovedFlowId" name="Draft Approved" sourceRef="exclusivegateway2" targetRef="findApproverTaskId"></sequenceFlow>
+    <sequenceFlow id="draftNotApprovedFlowId" name="Draft Not Approved" sourceRef="exclusivegateway2" targetRef="editDraftId"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_activitiReview">
+    <bpmndi:BPMNPlane bpmnElement="activitiReview" id="BPMNPlane_activitiReview">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="editDraftId" id="BPMNShape_editDraftId">
+        <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="findApproverTaskId" id="BPMNShape_findApproverTaskId">
+        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="informRegistrarMessageId" id="BPMNShape_informRegistrarMessageId">
+        <omgdc:Bounds height="35.0" width="35.0" x="680.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="reviewDraftTaskId" id="BPMNShape_reviewDraftTaskId">
+        <omgdc:Bounds height="55.0" width="105.0" x="498.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="95.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="275.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="445.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="noMoreApproversFlowId" id="BPMNEdge_noMoreApproversFlowId">
+        <omgdi:waypoint x="570.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="157.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="93.0" x="570.0" y="157.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="moreApproversFlowId" id="BPMNEdge_moreApproversFlowId">
+        <omgdi:waypoint x="550.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="270.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="90.0" x="540.0" y="210.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="550.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="370.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="draftApprovedFlowId" id="BPMNEdge_draftApprovedFlowId">
+        <omgdi:waypoint x="530.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="389.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="185.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="75.0" x="421.0" y="371.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="draftNotApprovedFlowId" id="BPMNEdge_draftNotApprovedFlowId">
+        <omgdi:waypoint x="530.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="185.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="94.0" x="242.0" y="370.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
